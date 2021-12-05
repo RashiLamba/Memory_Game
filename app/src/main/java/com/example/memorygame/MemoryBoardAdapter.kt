@@ -13,12 +13,17 @@ import com.example.memorygame.modals.MemoryCard
 import kotlin.math.min
 
 class MemoryBoardAdapter(private val context: Context, private val boardSize: BoardSize,
-                         private val randomizedCards: List<MemoryCard>) :
+                         private val randomizedCards: List<MemoryCard>,
+                         private val cardClickListener: CardClickListener) :
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
 
     companion object{
         private const val MARGIN_SIDE = 10
         private const val TAG = "MemoryBoardAdapter"
+    }
+
+    interface CardClickListener{
+       fun onClickListener(position: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -49,8 +54,8 @@ class MemoryBoardAdapter(private val context: Context, private val boardSize: Bo
             val memoryCard =  randomizedCards[position]
             imageButton.setImageResource(if (memoryCard.isFaceUp) memoryCard.identifier else R.drawable.ic_launcher_background)
             imageButton.setOnClickListener {
-                Log.d(TAG, "Clicked on position $position")
-
+                Log.d(TAG, "Tag : Clicked on position $position")
+                cardClickListener.onClickListener(position)
             }
 
         }
