@@ -1,11 +1,13 @@
 package com.example.memorygame
 
+import android.animation.ArgbEvaluator
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.memorygame.databinding.ActivityMainBinding
 import com.example.memorygame.modals.BoardSize
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerBoard.hasFixedSize()
     }
 
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun updateGameWithFlip(position: Int) {
         //Error Checking
         if(memoryGame.haveWonGame()){
@@ -60,6 +63,12 @@ class MainActivity : AppCompatActivity() {
         //Actually flip over the card
         if (memoryGame.flipCard(position)){
             Log.i(TAG, "Found a match! Num Pairs found: ${memoryGame.numPairsFound}")
+            val color = ArgbEvaluator().evaluate(
+                memoryGame.numPairsFound.toFloat() / boardSize.getNumPairs(),
+                ContextCompat.getColor(this, R.color.red),
+                ContextCompat.getColor(this, R.color.green)
+             ) as Int
+            binding.tvNumPairs.setTextColor(color)
             binding.tvNumPairs.text = "Pairs:  ${memoryGame.numPairsFound} / ${boardSize.getNumPairs()}"
             if (memoryGame.haveWonGame()){
                 Snackbar.make(binding.clRoot, "You Won! Congratulations.", Snackbar.LENGTH_LONG).show()
