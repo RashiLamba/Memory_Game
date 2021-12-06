@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/clRoot">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerBoard"
@@ -38,7 +39,7 @@
                 android:id="@+id/tvNumMoves"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/menu_0"
+                android:text="@string/moves_0"
                 android:gravity="center"
                 android:textSize="20sp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
