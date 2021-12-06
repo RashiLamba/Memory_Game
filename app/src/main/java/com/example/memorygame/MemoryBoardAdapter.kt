@@ -7,13 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memorygame.modals.BoardSize
 import com.example.memorygame.modals.MemoryCard
 import kotlin.math.min
 
-class MemoryBoardAdapter(private val context: Context, private val boardSize: BoardSize,
-                         private val randomizedCards: List<MemoryCard>,
+class MemoryBoardAdapter(private val context: Context,
+                         private val boardSize: BoardSize,
+                         private val cards: List<MemoryCard>,
                          private val cardClickListener: CardClickListener) :
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
 
@@ -51,8 +54,12 @@ class MemoryBoardAdapter(private val context: Context, private val boardSize: Bo
         private val imageButton = itemView.findViewById<ImageButton>(R.id.image_button)
 
         fun bind(position: Int) {
-            val memoryCard =  randomizedCards[position]
+            val memoryCard =  cards[position]
             imageButton.setImageResource(if (memoryCard.isFaceUp) memoryCard.identifier else R.drawable.ic_launcher_background)
+
+            imageButton.alpha = if (memoryCard.isMatched) 0.3f else 1.0f
+            val colorStateList = if (memoryCard.isMatched) ContextCompat.getColorStateList(context, R.color.grey) else null
+            ViewCompat.setBackgroundTintList(imageButton, colorStateList)
             imageButton.setOnClickListener {
                 Log.d(TAG, "Tag : Clicked on position $position")
                 cardClickListener.onClickListener(position)
